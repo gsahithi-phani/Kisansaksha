@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Kisansaksha | Smart Farm Advisory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Caveat:700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #dff0d8 60%, #a3d0a2 100%);
+      color: #293e2c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav {
+      background: #2a6536;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 2rem 0.6rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: relative;
+      z-index: 50;
+    }
+    nav .logo {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    nav img { height: 50px; width: 50px; border-radius: 50%; border: 2px solid #157347; background: #fff; }
+    nav .sitename { font-size: 2rem; color: #fff; font-weight: 700; }
+    nav .login-btn {
+      background: #93d085; color: #2a6536; padding: 0.5rem 1.2rem; font-size: 1rem; font-weight: 700; border: none;
+      border-radius: 10px; cursor: pointer; transition: background 0.2s;
+      position: relative;
+      z-index: 51;
+    }
+    nav .login-btn:hover { background: #2a6536; color: #fff; border: 2px solid #93d085; }
+
+    #placeBar {
+      background-color: #accf97;
+      color: #24491a;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 49;
+    }
+    #placeBar label {
+      font-weight: 700;
+      min-width: 90px;
+    }
+    #placeBar input[type="text"] {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1.5px solid #6e9a4d;
+      flex: 1 1 220px;
+      font-size: 1rem;
+    }
+    #placeBar button {
+      background-color: #2a6536;
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    #placeBar button:hover {
+      background-color: #93d085;
+      color: #2a6536;
+    }
+    #placeDetails {
+      margin-left: auto;
+      background: #e9f1de;
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      color: #2a6536;
+      font-weight: 600;
+      font-size: 0.9rem;
+      max-width: 480px;
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .hero {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      padding: 2.5rem 1rem 1.3rem 1rem; background: linear-gradient(80deg,#e3f7e9 60%, #93d085 100%);
+      margin-top: 60px;
+    }
+    .hero img { width: 110px; margin-bottom: 1.2rem; border-radius: 10px; box-shadow: 1px 2px 7px #888; }
+    .hero h1 { font-size: 2.2rem; margin-top: .5rem;font-weight:700; color:#265b31;}
+    .hero p { font-size: 1.15rem; margin-top: 0.8rem; color: #324b29; font-weight: 500; }
+    .features {
+      max-width: 1200px; margin: 2.2rem auto 2rem; padding: 0 2rem;
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(275px,1fr)); gap: 2rem;
+    }
+    .card {
+      background: #fff; border-radius: 18px; box-shadow: 0 5px 32px rgba(21,115,71,0.11); padding: 2rem 1.3rem 1.2rem 1.3rem;
+      display: flex; flex-direction: column; align-items: center; cursor:pointer; position: relative;
+      transition:transform .17s; min-height: 320px;
+    }
+    .card:hover { transform: translateY(-8px) scale(1.03); box-shadow:0 12px 40px rgba(21,115,71,0.09);}
+    .card img.icon { width: 54px; margin-bottom: .55rem; }
+    .card h2 { font-size: 1.16rem; color: #275a2e; font-weight:700; margin-bottom:0.65rem;}
+    .card p { color: #46644c; font-size: 0.97rem; text-align: center;}
+    .why-choose {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #e6f1de;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(21,115,71,0.12);
+      padding: 1.5rem 2rem;
+      color: #2a6536;
+      position: relative;
+      z-index: 1;
+    }
+    .why-choose h2 {
+      text-align: center;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+    }
+    .why-choose ul {
+      list-style-type: disc;
+      padding-left: 1.2rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .plant-pic {
+      max-width: 150px;
+      margin: 1rem auto;
+      display: block;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(21,115,71,0.2);
+    }
+    /* Impact/Statistics section */
+    .impact-section {
+      background: linear-gradient(135deg,#27c967 0,#86da94 100%);
+      color:#fff;
+      padding:2.2rem 1rem 2rem 1rem;
+      text-align:center;
+      border-radius:28px 28px 0 0;
+      max-width:900px;
+      margin:3rem auto 0 auto;
+      font-family:'Caveat',cursive, 'Roboto', sans-serif;
+    }
+    .impact-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      font-family:'Caveat',cursive;
+    }
+    .impact-cards {
+      display:flex; flex-wrap: wrap;gap:2rem;justify-content:center;align-items:center;
+    }
+    .impact-card {
+      background:rgba(255,255,255,0.16);
+      border-radius:21px;
+      padding:1.2rem;
+      min-width:120px;
+      flex:0 1 180px;
+    }
+    .impact-card img {
+      width:38px;
+      margin-bottom:0.7rem;
+    }
+    .impact-card .bigstat {
+      font-size:2.1rem;
+      font-family:'Caveat',cursive;
+    }
+    .impact-card .statlabel {
+      font-size:1.01rem;
+      font-family:inherit;
+    }
+    /* Contact section */
+    .contact-section {
+      background:#223828;
+      color:#fff;
+      padding:2.5rem 1.2rem 1.2rem 1.2rem;
+      font-family:'Roboto',sans-serif;
+    }
+    .contact-section h3 {
+      font-family:'Caveat',cursive;
+      font-size:1.25rem;
+      font-weight:700;
+      margin-bottom:1.6rem;
+    }
+    .contact-section .detailrow {
+      display:flex;align-items:center;gap:0.85rem;margin-bottom:0.8rem;
+    }
+    .contact-section .lang-buttons {
+      margin:1.7rem 0 0 0;text-align:left;
+    }
+    .contact-section .lang-buttons button {
+      background:#c5e4c3;
+      border:none;
+      border-radius:7px;
+      padding:0.20rem 0.7rem;
+      margin-left:0.6rem;
+      cursor:pointer;
+      font-weight:700;
+      font-size:1rem;
+      color:#2a6536;
+    }
+    .contact-section .lang-buttons button:active {background:#2a6536;color:#fff;}
+    /* Modal for Language selection */
+    .lang-modal-bg {
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+      position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center; z-index: 30;
+    }
+    .lang-modal {
+      background: #fff; border-radius: 20px;
+      max-width: 400px; width: 90%;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      animation: pop .3s ease forwards;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .lang-modal h3 {
+      margin-bottom: 1rem;
+      color: #265b31;
+      font-weight: 700;
+    }
+    .lang-modal select {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 1rem;
+      border: 2px solid #a3d0a2;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      background: #e8f5e9;
+      color: #2a6536;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .lang-modal button {
+      background: #2a6536;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .lang-modal button:hover {
+      background: #93d085;
+      color: #2a6536;
+    }
+    .modal-bg {
+      background: rgba(0,0,0,0.38); backdrop-filter: blur(1.5px);
+      position:fixed; left:0;top:0;width:100vw;height:100vh;
+      display:none; align-items: center; justify-content: center;
+      z-index: 25;
+    }
+    .modal-bg#loginModalBg {
+      z-index: 100 !important;
+    }
+    .modal {
+      background: #fff; border-radius: 20px; max-width: 390px; min-width: 300px; padding: 2rem 1.5rem 1rem 1.5rem;
+      box-shadow: 0 10px 40px rgba(21,115,71,0.13); text-align: center; position: relative; animation: pop .23s ease;
+    }
+    @keyframes pop { 0%{transform:scale(.96); opacity:0;} 100%{transform:scale(1); opacity:1;} }
+    .modal h3 { color: #265b31; margin-bottom: 1rem; }
+    .modal label { font-weight: 700; text-align: left; margin: 0.6rem 0 0.2rem 0; display: block;}
+    .modal input,.modal select {width: 100%; padding: 0.55rem; border-radius: 9px; border:1.2px solid #a3d0a2; margin-bottom:0.5rem;}
+    .modal .close-btn {
+      position:absolute;right:16px;top:12px;background:transparent;border:none;font-size:1.5rem;color:#5ca760;cursor:pointer; font-weight:700;
+      transition:color .16s;
+    }
+    .modal .close-btn:hover { color: #d62828;}
+    .modal .action-btn, .modal .voice-btn {
+      background: #2a6536;margin-top:1rem; color: #fff; font-weight:700;
+      padding: 0.6rem 1.2rem; border: none; border-radius: 10px;cursor:pointer;
+      transition: background .20s;
+    }
+    .modal .action-btn:hover { background: #93d085;color:#2a6536;}
+    .modal .voice-btn {
+      background:#93d085;color:#2a6536;margin-left:0.4rem; }
+    .modal .voice-btn:hover { background:#2a6536;color:#fff;}
+    .modal .msg {margin-top: .7rem;}
+    @media (max-width: 740px) {
+      #placeBar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+      .features { grid-template-columns:1fr; }
+      .hero h1 { font-size:1.25rem; }
+      nav,footer {font-size:0.94rem;}
+      .impact-cards {flex-direction:column;}
+    }
+    footer {
+      background: #266532; color:#fff; text-align:center; padding: 1.25rem; font-weight:500;margin-top:auto;
+    }
+  </style>
+</head>
+<body>
+<!-- Language Selection Modal -->
+<div class="lang-modal-bg" id="langModal">
+  <div class="lang-modal">
+    <h3>Please select your regional language</h3>
+    <select id="languageSelect" aria-label="Select regional language">
+      <option value="" disabled selected>Select language</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Punjabi">Punjabi</option>
+      <option value="Telugu">Telugu</option>
+      <option value="Tamil">Tamil</option>
+      <option value="Marathi">Marathi</option>
+      <option value="Bengali">Bengali</option>
+      <option value="Gujarati">Gujarati</option>
+      <option value="Kannada">Kannada</option>
+      <option value="Malayalam">Malayalam</option>
+      <option value="English">English</option>
+      <option value="Assamese">Assamese</option>
+    </select>
+    <button onclick="confirmLanguage()">Confirm</button>
+  </div>
+</div>
+<nav>
+  <div class="logo">
+    <img src="kisan.jpg" alt="Kisansaksha Logo" />
+    <span class="sitename">Kisansaksha</span>
+  </div>
+  <button class="login-btn" id="loginOpenBtn">Sign In</button>
+</nav>
+<div id="placeBar">
+  <label for="placeInput">Enter a place:</label>
+  <input type="text" id="placeInput" placeholder="E.g. Punjab, Andhra Pradesh, Telangana" />
+  <button onclick="showPlaceDetails()">Show Details</button>
+  <div id="placeDetails"></div>
+</div>
+<div class="hero">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMoJ7EhwXOvL15cvpUNMqZIfWRd3FzL3bs-VAmML4zyFqbRbOSvKBP2AeaucIrc1oCXn8&usqp=CAU" alt="Plant Image" class="plant-pic"/>
+  <h1>Empowering Farmers with Smart, Reliable Solutions</h1>
+  <p>
+    AI-powered crop advisory, soil health, weather alerts, pest detection and market prices. <br>
+    India’s farms, India’s future, in 25+ languages.
+  </p>
+</div>
+<div class="why-choose">
+  <h2>Why Choose Kisansaksha?</h2>
+  <ul>
+    <li><strong>Multilingual Support:</strong> Services available in over 25 Indian languages including regional dialects.</li>
+    <li><strong>Personalized Advisory:</strong> Tailored crop and soil recommendations based on local data and farmer inputs.</li>
+    <li><strong>AI & Tech Powered:</strong> Smart crop disease detection and real-time weather alerts to minimize risks.</li>
+    <li><strong>Market Price Insights:</strong> Helps farmers get the best prices by tracking live and forecasted market trends.</li>
+    <li><strong>Trusted by Thousands:</strong> Serving farmers across India with reliable, actionable advice.</li>
+  </ul>
+</div>
+<div class="features">
+  <div class="card" onclick="openModal('voice')">
+    <img class="icon" src="https://img.icons8.com/officel/80/000000/voice-presentation.png" alt="Voice Icon"/>
+    <h2>Voice Support</h2>
+    <p>Interact, enter details and get advice using voice—supports 25+ Indian languages.</p>
+  </div>
+  <div class="card" onclick="openModal('crop')">
+    <img class="icon" src="https://img.icons8.com/color/96/000000/corn.png" alt="Crop Advisory"/>
+    <h2>Crop Advisory</h2>
+    <p>Personalized crop suggestions based on soil, season, and local conditions.</p>
+  </div>
+  <div class="card" onclick="openModal('soil')">
+    <img class="icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjinpR9ephVhxrn956p6KleaDnQFgrOhO_w7GH0FGd3NQyHsgiIuBmqw1WBsdEDI9Q91g&usqp=CAU" alt="Soil Health"/>
+    <h2>Soil Health Analysis</h2>
+    <p>Get fertilizer recommendations and pH adjustment tips for your land.</p>
+  </div>
+  <div class="card" onclick="openModal('weather')">
+    <img class="icon" src="https://img.icons8.com/color/96/000000/partly-cloudy-day--v1.png" alt="Weather Alerts"/>
+    <h2>Weather Alerts</h2>
+    <p>Timely personalized weather updates to help protect your crops.</p>
+  </div>
+  <div class="card" onclick="openModal('pest')">
+    <img class="icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH7OMXs8ZjbkvnJXwpexFQMeXnlu1F0jNAZ2lFHFOTJr88T4lLxhQGat-dsodZyH_IoO0&usqp=CAU" alt="Pest Detection"/>
+    <h2>Pest & Disease Detection</h2>
+    <p>Identify crop threats by uploading field photos and get treatment advice.</p>
+  </div>
+  <div class="card" onclick="openModal('market')">
+    <img class="icon" src="https://img.icons8.com/color/96/000000/price-tag-euro.png" alt="Market Prices"/>
+    <h2>Market Prices</h2>
+    <p>Live crop prices and forecasts to help you choose when and where to sell.</p>
+  </div>
+</div>
+
+<!-- Impact/Statistics section -->
+<div class="impact-section">
+  <h2>Trusted by Farmers Across India</h2>
+  <div class="impact-cards">
+    <div class="impact-card">
+      <img src="https://img.icons8.com/ios-filled/64/ffffff/groups.png" alt="Active Farmers"/>
+      <div class="bigstat">50K+</div>
+      <div class="statlabel">Active Farmers</div>
+    </div>
+    <div class="impact-card">
+      <img src="https://img.icons8.com/ios-filled/64/ffffff/marker.png" alt="Villages Covered"/>
+      <div class="bigstat">500+</div>
+      <div class="statlabel">Villages Covered</div>
+    </div>
+    <div class="impact-card">
+      <img src="https://img.icons8.com/ios-filled/64/ffffff/combo-chart.png" alt="Yield Increase"/>
+      <div class="bigstat">30%</div>
+      <div class="statlabel">Average Yield Increase</div>
+    </div>
+    <div class="impact-card">
+      <img src="https://img.icons8.com/ios-filled/64/ffffff/checked-user-male.png" alt="Satisfaction Rate" />
+      <div class="bigstat">95%</div>
+      <div class="statlabel">Satisfaction Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact & resources section -->
+<div class="contact-section">
+  <h3>Contact</h3>
+  <div style="max-width:500px;margin:0 auto;text-align:left;">
+    <div class="detailrow">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/place-marker--v1.png"/>
+      Department of Agriculture, Government of Punjab<br>Chandigarh, India
+    </div>
+    <div class="detailrow">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png"/>
+      +91-112-210234
+    </div>
+    <div class="detailrow">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/new-post.png"/>
+      support@smartcroppunjabagov.in
+    </div>
+  </div>
+  <div class="lang-buttons">
+    <span>Available in:</span>
+    <button type="button">हिंदी</button>
+    <button type="button">ਪੰਜਾਬੀ</button>
+    <button type="button">English</button>
+    <button type="button">+2 more</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg" style="z-index: 25;">
+  <div class="modal" id="modalContent"></div>
+</div>
+<div class="modal-bg" id="loginModalBg" style="z-index: 100 !important;">
+  <div class="modal login-modal">
+    <button class="close-btn" onclick="closeModal('loginModalBg')">&times;</button>
+    <h3>Sign In to Kisansaksha</h3>
+    <form id="loginForm" autocomplete="off">
+      <label>Email:</label>
+      <input type="email" id="loginEmail" required>
+      <label>Password:</label>
+      <input type="password" id="loginPwd" required>
+      <button class="action-btn" type="submit">Sign In</button>
+    </form>
+    <div id="loginMsg" style="color:#d62828; margin-top:0.4rem;"></div>
+  </div>
+</div>
+<footer>© 2025 Kisansaksha. All rights reserved.</footer>
+<script>
+  function confirmLanguage() {
+    const select = document.getElementById('languageSelect');
+    const lang = select.value;
+    if (!lang) {
+      alert("Please select a language to continue.");
+      return;
+    }
+    document.getElementById('langModal').style.display = 'none';
+  }
+  window.onload = function() {
+    document.getElementById('langModal').style.display = 'flex';
+  };
+  const farmingData = {
+    "punjab": {
+      "Soil Type": "Alluvial Soil (Loam)",
+      "Soil pH": "6.5 - 7.5",
+      "Climate": "Subtropical with distinct seasons",
+      "Average Rainfall": "650 mm annually",
+      "Major Crops": "Wheat, Rice, Maize, Cotton",
+      "Irrigation": "Canal & Tube wells"
+    },
+    "andhra pradesh": {
+      "Soil Type": "Black, Red, Sandy Soils",
+      "Soil pH": "5.5 - 7.0",
+      "Climate": "Tropical wet and dry",
+      "Average Rainfall": "900 mm annually",
+      "Major Crops": "Rice, Maize, Groundnut, Sugarcane",
+      "Irrigation": "Canal irrigation and wells"
+    },
+    "telangana": {
+      "Soil Type": "Red Sandy Soils",
+      "Soil pH": "6.0 - 7.5",
+      "Climate": "Semi-arid tropical",
+      "Average Rainfall": "750 mm annually",
+      "Major Crops": "Cotton, Rice, Maize, Pulses",
+      "Irrigation": "Canals and bore wells"
+    }
+  };
+  function showPlaceDetails() {
+    const input = document.getElementById('placeInput').value.trim().toLowerCase();
+    const detailsDiv = document.getElementById('placeDetails');
+    detailsDiv.style.display = 'none';
+    detailsDiv.innerHTML = "";
+    if (!input) {
+      alert("Please enter a place.");
+      return;
+    }
+    if (farmingData[input]) {
+      const data = farmingData[input];
+      let html = "";
+      for (let key in data) {
+        html += `<div><strong>${key}:</strong> ${data[key]}</div>`;
+      }
+      detailsDiv.innerHTML = html;
+      detailsDiv.style.display = "flex";
+    } else {
+      detailsDiv.innerHTML = `<div><em>Sorry, no farming details available for "${input}".</em></div>`;
+      detailsDiv.style.display = "block";
+    }
+  }
+  document.getElementById('loginOpenBtn').onclick = function() {
+    document.getElementById('loginModalBg').style.display = 'flex';
+  };
+  document.getElementById('loginForm').onsubmit = function(e) {
+    e.preventDefault();
+    let email = document.getElementById('loginEmail').value;
+    let pwd = document.getElementById('loginPwd').value;
+    let msg = document.getElementById('loginMsg');
+    if (!email || !pwd) {msg.textContent = "Fill both email and password";return;}
+    msg.style.color = "green";
+    msg.textContent = "Signed in (demo)!";
+    setTimeout(()=>{closeModal('loginModalBg')},1000);
+    return false;
+  };
+  function openModal(feature) {
+    let modalBg = document.getElementById('modalBg');
+    let modalContent = document.getElementById('modalContent');
+    modalBg.style.display = 'flex';
+    let title, questionsHtml;
+    if (feature === 'voice') {
+      title = "Voice Support";
+      questionsHtml = `
+      <h3>${title}</h3>
+      <p>Click <b>Microphone</b> and speak your query.<br>
+      (e.g. "Show wheat prices in Punjab" or "Suggest crops for loam soil in rabi season")</p>
+      <button class="voice-btn" onclick="startVoice()">🎤 Start Voice Input</button>
+      <div id="voiceResult" class="msg"></div>
+      `;
+    }
+    if (feature === 'crop') {
+      title = "Crop Advisory";
+      questionsHtml = `
+      <h3>${title}</h3>
+      <form onsubmit="return cropSubmit(event)">
+        <label>Soil Type:</label>
+        <select id="cropSoil" required>
+          <option value="">Select</option>
+          <option value="loam">Loam</option>
+          <option value="sandy">Sandy</option>
+          <option value="clay">Clay</option>
+        </select>
+        <label>Season:</label>
+        <select id="cropSeason" required>
+          <option value="">Select</option>
+          <option value="kharif">Kharif</option>
+          <option value="rabi">Rabi</option>
+          <option value="summer">Summer</option>
+        </select>
+        <label>Location:</label>
+        <input type="text" id="cropLocation" required placeholder="Village/City">
+        <button class="action-btn" type="submit">Get Advisory</button>
+      </form>
+      <div id="cropMsg" class="msg"></div>
+      `;
+    }
+    if (feature === 'soil') {
+      title = "Soil Health Analysis";
+      questionsHtml = `
+      <h3>${title}</h3>
+      <form onsubmit="return soilSubmit(event)">
+        <label>Land Area (acres):</label>
+        <input type="number" min="0.1" step="0.1" id="soilArea" required>
+        <label>Soil pH Level:</label>
+        <input type="number" step="0.1" min="4" max="9" id="soilPH" required>
+        <label>Last Fertilizer Used:</label>
+        <input type="text" id="soilFert" required>
+        <button class="action-btn" type="submit">Analyze</button>
+      </form>
+      <div id="soilMsg" class="msg"></div>
+      `;
+    }
+    if (feature === 'weather') {
+      title = "Weather Alerts";
+      questionsHtml = `
+      <h3>${title}</h3>
+      <form onsubmit="return weatherSubmit(event)">
+        <label>Your Location:</label>
+        <input type="text" id="weatherLoc" required placeholder="Village/Town/City">
+        <label>Crop Type:</label>
+        <input type="text" id="weatherCrop" required placeholder="E.g. Rice, Wheat">
+        <button class="action-btn" type="submit">Get Weather Alerts</button>
+      </form>
+      <div id="weatherMsg" class="msg"></div>
+      `;
+    }
+    if (feature === 'pest') {
+      title = "Pest & Disease Detection";
+      questionsHtml = `
+      <h3>${title}</h3>
+      <form onsubmit="return pestSubmit(event)">
+        <label>Crop Type:</label>
+        <input type="text" id="pestCrop" required placeholder="E.g. Wheat, Tomato">
+        <label>Upload Field Image:</label>
+        <input type="file" id="pestImg" accept="image/*" required>
+        <button class="action-btn" type="submit">Detect</button>
+      </form>
+      <div id="pestMsg" class="msg"></div>
+      `;
+    }
+    if (feature === 'market') {
+      title = "Market Prices";
+      questionsHtml = `
+      <h3>${title}</h3>
+      <form onsubmit="return marketSubmit(event)">
+        <label>Crop Name:</label>
+        <input type="text" id="marketCrop" required placeholder="E.g. Wheat">
+        <label>Your Location:</label>
+        <input type="text" id="marketLoc" required placeholder="E.g. Punjab, Telangana">
+        <button class="action-btn" type="submit">Check Prices</button>
+      </form>
+      <div id="marketMsg" class="msg"></div>
+      `;
+    }
+    modalContent.innerHTML = `<button class="close-btn" onclick="closeModal('modalBg')">&times;</button>` + questionsHtml;
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+  window.cropSubmit = function(e){
+    e.preventDefault();
+    let soil = document.getElementById('cropSoil').value;
+    let season = document.getElementById('cropSeason').value;
+    let loc = document.getElementById('cropLocation').value;
+    let el = document.getElementById('cropMsg');
+    el.style.color = '#2a6536';
+    el.textContent = `Suggestions for ${soil} soil in ${season} season at ${loc}: Wheat, Maize, Chickpea.`;
+    return false;
+  };
+  window.soilSubmit = function(e){
+    e.preventDefault();
+    let ph = parseFloat(document.getElementById('soilPH').value);
+    let fert = document.getElementById('soilFert').value;
+    let el = document.getElementById('soilMsg');
+    el.style.color = '#2a6536';
+    if(ph < 6){
+      el.textContent = "Soil acidic, use lime and organic manure.";
+    } else if(ph > 8){
+      el.textContent = "Soil alkaline, add gypsum and balance irrigation.";
+    } else {
+      el.textContent = `Soil healthy with pH ${ph}. Next fertilizer: ${fert}.`;
+    }
+    return false;
+  };
+  window.weatherSubmit = function(e){
+    e.preventDefault();
+    let loc=document.getElementById('weatherLoc').value;
+    let crop=document.getElementById('weatherCrop').value;
+    let el=document.getElementById('weatherMsg');
+    el.style.color = "#2a6536";
+    el.textContent=`Weather alert for ${crop} in ${loc}: Rain expected in 2 days, prepare for irrigation.`;
+    return false;
+  };
+  window.pestSubmit = function(e){
+    e.preventDefault();
+    let crop=document.getElementById('pestCrop').value;
+    let img=document.getElementById('pestImg').files[0];
+    let el=document.getElementById('pestMsg');
+    el.style.color="#2a6536";
+    if(img){
+      el.textContent=`Detected Aphids on ${crop}. Suggest: Neem spray and rotate crops.`;
+    }else{
+      el.textContent="Upload crop image.";
+    }
+    return false;
+  };
+  window.marketSubmit=function(e){
+    e.preventDefault();
+    let crop=document.getElementById('marketCrop').value;
+    let loc=document.getElementById('marketLoc').value;
+    let el=document.getElementById('marketMsg');
+    el.style.color="#2a6536";
+    el.textContent=`Current price of ${crop} in ${loc}: ₹2530/quintal.`;
+    return false;
+  };
+  function startVoice(){
+    let resultDiv=document.getElementById('voiceResult');
+    if('webkitSpeechRecognition' in window){
+      let recognition=new webkitSpeechRecognition();
+      recognition.continuous=false;
+      recognition.lang='en-IN';
+      recognition.onresult=function(e){let transcript=e.results[0][0].transcript;
+        resultDiv.textContent="You said: "+transcript;
+      };
+      recognition.onerror=function(e){resultDiv.textContent="Voice error: "+e.error;};
+      recognition.start();
+      resultDiv.textContent="Listening...";
+    }else{
+      resultDiv.textContent="Speech recognition not supported in this browser.";
+    }
+  }
+</script>
+</body>
+</html>
